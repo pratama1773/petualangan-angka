@@ -57,8 +57,9 @@ npm run build
 
 # 4. Pratinjau hasil build secara lokal
 npm run preview
-## 📁 Struktur Proyek
 
+
+## Struktur Proyek
 ```
 ├── public/
 │   └── favicon.svg
