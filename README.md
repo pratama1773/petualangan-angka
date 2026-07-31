@@ -64,18 +64,18 @@ npm run preview
 │   └── favicon.svg
 ├── src/
 │   ├── components/
-│   │   ├── BackgroundClouds.jsx   # dekorasi latar belakang
-│   │   ├── Home.jsx               # halaman pilih mode
-│   │   ├── SetupGame.jsx          # halaman pilih tingkat kesulitan
-│   │   ├── GameNormal.jsx         # Mode Santai
-│   │   ├── GameChallenge.jsx      # Mode Tantangan (timer & nyawa)
-│   │   └── History.jsx            # halaman riwayat sesi
+│   │   ├── BackgroundClouds.jsx
+│   │   ├── Home.jsx
+│   │   ├── SetupGame.jsx
+│   │   ├── GameNormal.jsx
+│   │   ├── GameChallenge.jsx
+│   │   └── History.jsx
 │   ├── utils/
-│   │   ├── questionGenerator.js   # logika pembuatan soal + aturan pengaman
-│   │   └── storage.js             # penyimpanan riwayat berbasis sessionStorage
+│   │   ├── questionGenerator.js
+│   │   └── storage.js
 │   ├── App.jsx
 │   ├── main.jsx
-│   └── index.css                  # design system (warna, tipografi, animasi)
+│   └── index.css
 ├── index.html
 ├── vite.config.js
 ├── netlify.toml
