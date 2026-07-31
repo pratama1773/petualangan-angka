@@ -1,0 +1,13 @@
+[build]
+  command = "npm run build"
+  publish = "dist"
+
+[build.environment]
+  NODE_VERSION = "20"
+
+# Aplikasi menggunakan HashRouter sehingga tidak memerlukan redirect khusus,
+# tetapi ini disertakan sebagai jaring pengaman untuk navigasi langsung ke path apa pun.
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
