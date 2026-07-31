@@ -1,65 +1,69 @@
-# Petualangan Angka[cite: 1]
+# Petualangan Angka
 
-Game latihan berhitung interaktif untuk anak SD yang dibangun dengan React dan Vite.[cite: 1]
+Aplikasi permainan edukatif matematika interaktif yang ditujukan untuk siswa Sekolah Dasar (SD), dikembangkan menggunakan teknologi React dan Vite.
 
-## Fitur Utama[cite: 1]
+## Fitur Utama
 
-### 1. Dua Mode Permainan[cite: 1]
+### 1. Mode Permainan
 
-* **Mode Santai**[cite: 1]
-  * Tanpa batasan waktu maupun nyawa.[cite: 1]
-  * Skor akumulatif: setiap jawaban benar bernilai +1 poin, jawaban salah bernilai 0.[cite: 1]
-  * Soal ditampilkan dalam bentuk pilihan ganda (4 opsi).[cite: 1]
-  * Dapat dihentikan kapan saja menggunakan tombol penyimpanan skor.[cite: 1]
+* **Mode Santai**
+  * Tidak terdapat batasan waktu maupun jumlah nyawa dalam permainan.
+  * Sistem skor bersifat akumulatif: setiap jawaban yang benar akan mendapatkan +1 poin, sedangkan jawaban yang salah bernilai 0.
+  * Soal disajikan dalam format pilihan ganda dengan 4 (empat) opsi jawaban.
+  * Permainan dapat dihentikan kapan saja melalui tombol penyimpanan skor yang tersedia.
 
-* **Mode Tantangan**[cite: 1]
-  * Dilengkapi 3 nyawa dan pengatur waktu (*timer*) per soal.[cite: 1]
-  * Kehilangan 1 nyawa jika waktu habis atau jawaban salah.[cite: 1]
-  * Permainan berakhir secara otomatis saat nyawa habis.[cite: 1]
-  * Perhitungan skor menggabungkan poin dasar, bonus kecepatan menjawab, serta total soal yang diselesaikan.[cite: 1]
-  * Format soal disusun secara vertikal dengan input jawaban berupa pengetikan angka langsung.[cite: 1]
+* **Mode Tantangan**
+  * Dilengkapi dengan 3 (tiga) nyawa dan sistem pengatur waktu (*timer*) pada setiap soal.
+  * Pemain akan kehilangan 1 (satu) nyawa apabila durasi waktu habis atau memberikan jawaban yang salah.
+  * Sesi permainan akan berakhir secara otomatis ketika seluruh nyawa telah habis.
+  * Kalkulasi skor akhir merupakan akumulasi dari poin dasar, bonus kecepatan dalam menjawab, serta total soal yang berhasil diselesaikan.
+  * Format soal disusun secara vertikal, di mana input jawaban dilakukan melalui pengetikan angka secara langsung.
 
-### 2. Generator Soal[cite: 1]
+### 2. Sistem Generator Soal
 
-Logika pembuatan soal pada `src/utils/questionGenerator.js` diatur dengan ketentuan:[cite: 1]
-* **Pengurangan**: Angka pertama dipastikan selalu lebih besar atau sama dengan angka kedua untuk menghindari hasil negatif.[cite: 1]
-* **Pembagian**: Disusun berdasarkan operasi perkalian terlebih dahulu guna memastikan hasil akhir berupa bilangan bulat.[cite: 1]
-* **Perkalian**: Batasan angka disesuaikan dengan tingkat kesulitan agar tetap proporsional.[cite: 1]
-* Rentang nilai angka bertambah secara dinamis sesuai tingkat kesulitan.[cite: 1]
+Logika pembuatan soal yang terdapat pada direktori `src/utils/questionGenerator.js` diatur berdasarkan ketentuan berikut:
+* **Pengurangan**: Angka pertama dipastikan selalu lebih besar atau sama dengan angka kedua guna menghindari hasil bernilai negatif.
+* **Pembagian**: Disusun berdasarkan operasi perkalian terlebih dahulu untuk memastikan hasil akhir selalu berupa bilangan bulat.
+* **Perkalian**: Batasan angka disesuaikan secara proporsional dengan tingkat kesulitan yang dipilih.
+* Rentang nilai angka akan bertambah secara dinamis menyesuaikan dengan tingkat kesulitan permainan.
 
-### 3. Tingkat Kesulitan[cite: 1]
+### 3. Tingkat Kesulitan
 
-| Level | Operasi | Rentang Angka | Waktu per Soal (Mode Tantangan) |[cite: 1]
-|---|---|---|---|[cite: 1]
-| Mudah | Penjumlahan, Pengurangan | 1–10 | 20 detik |[cite: 1]
-| Sedang | Penjumlahan, Pengurangan, Perkalian | 5–50 (Perkalian: 2–10) | 15 detik |[cite: 1]
-| Sulit | Penjumlahan, Pengurangan, Perkalian, Pembagian | 10–100 (Perkalian/Pembagian: 2–12) | 12 detik |[cite: 1]
+| Tingkat Kesulitan | Jenis Operasi | Rentang Angka | Alokasi Waktu per Soal (Mode Tantangan) |
+| :--- | :--- | :--- | :--- |
+| **Mudah** | Penjumlahan, Pengurangan | 1–10 | 20 detik |
+| **Sedang** | Penjumlahan, Pengurangan, Perkalian | 5–50 (Perkalian: 2–10) | 15 detik |
+| **Sulit** | Penjumlahan, Pengurangan, Perkalian, Pembagian | 10–100 (Perkalian/Pembagian: 2–12) | 12 detik |
 
-### 4. Riwayat Sesi[cite: 1]
+### 4. Riwayat Sesi
 
-* Sesi permainan yang telah diselesaikan dicatat pada halaman Riwayat.[cite: 1]
-* Memanfaatkan `sessionStorage` sehingga data riwayat otomatis terhapus saat tab atau aplikasi ditutup.[cite: 1]
-* Tersedia fitur penghapusan riwayat secara manual.[cite: 1]
+* Sesi permainan yang telah diselesaikan akan dicatat dan ditampilkan pada halaman Riwayat.
+* Sistem memanfaatkan `sessionStorage`, sehingga data riwayat akan terhapus secara otomatis saat *tab* browser atau aplikasi ditutup.
+* Tersedia juga fitur untuk melakukan penghapusan data riwayat secara manual oleh pengguna.
 
-## Instalasi dan Menjalankan Proyek[cite: 1]
+---
 
-Pastikan [Node.js](https://nodejs.org/) versi 18 atau yang lebih baru telah terinstal pada sistem Anda.[cite: 1]
+## Panduan Instalasi dan Penggunaan
+
+Sebelum memulai, pastikan perangkat Anda telah terinstal [Node.js](https://nodejs.org/) versi 18 atau versi yang lebih baru.
 
 ```bash
-# 1. Install dependencies
+# 1. Menginstal seluruh dependensi yang dibutuhkan
 npm install
 
-# 2. Jalankan mode pengembangan
+# 2. Menjalankan aplikasi dalam mode pengembangan (development)
 npm run dev
 
-# 3. Build aplikasi untuk produksi
+# 3. Membangun (build) aplikasi untuk lingkungan produksi
 npm run build
 
-# 4. Pratinjau hasil build secara lokal
+# 4. Melakukan pratinjau (preview) hasil build secara lokal
 npm run preview
-```[cite: 1]
+```
 
-## Struktur Proyek[cite: 1]
+---
+
+## Struktur Direktori Proyek
 
 ```text
 ├── public/
@@ -82,12 +86,14 @@ npm run preview
 ├── vite.config.js
 ├── netlify.toml
 └── package.json
-```[cite: 1]
+```
 
-## Catatan Teknis[cite: 1]
+---
 
-- Menggunakan `HashRouter` dari `react-router-dom` sehingga navigasi tetap berfungsi normal di hosting statis manapun tanpa konfigurasi server tambahan.[cite: 1]
-- Bundle produksi berukuran kecil (JS ter-gzip ± 59 KB) agar tetap ringan dan cepat dimuat, termasuk di koneksi lambat.[cite: 1]
-- Tampilan sepenuhnya responsif — nyaman digunakan di ponsel maupun tablet.[cite: 1]
-- Menghormati preferensi `prefers-reduced-motion` pengguna untuk mengurangi animasi bila diperlukan.[cite: 1]
-- Tidak ada data pribadi yang dikumpulkan atau dikirim ke server mana pun; seluruh permainan berjalan di sisi klien (browser).[cite: 1]
+## Catatan Teknis
+
+* Aplikasi mengimplementasikan `HashRouter` dari pustaka `react-router-dom` guna memastikan kelancaran navigasi pada berbagai layanan *hosting* statis tanpa memerlukan konfigurasi server tambahan.
+* Berkas produksi (*production bundle*) dirancang dalam ukuran yang sangat efisien (berkas JS ter-gzip ± 59 KB) untuk memastikan performa pemuatan yang ringan dan cepat, termasuk pada kondisi jaringan yang lambat.
+* Antarmuka pengguna (UI) dirancang sepenuhnya responsif, memberikan kenyamanan penggunaan baik pada perangkat ponsel maupun tablet.
+* Aplikasi menghormati preferensi aksesibilitas `prefers-reduced-motion` dari pengguna dengan cara meminimalisasi animasi jika fitur tersebut diaktifkan.
+* Mengedepankan privasi pengguna; tidak ada data pribadi yang dikumpulkan maupun dikirimkan ke server eksternal mana pun. Seluruh proses permainan dieksekusi secara lokal di sisi klien (*browser*).
