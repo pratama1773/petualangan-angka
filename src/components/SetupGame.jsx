@@ -1,22 +1,30 @@
-import { useNavigate, useParams, Link } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import { useState } from 'react'
+import { Turtle, Rocket, Sprout, Star, Flame, CheckCircle2, Play } from 'lucide-react'
 import { DIFFICULTY } from '../utils/questionGenerator.js'
+import Brand from './Brand.jsx'
 
 const MODE_INFO = {
   santai: {
     title: 'Mode Santai',
-    emoji: '🐢',
+    icon: <Turtle size={34} strokeWidth={2} />,
     accent: 'grass',
     route: '/main/santai',
     desc: 'Jawab soal sebanyak mungkin. Benar dapat +1 poin, salah tidak mengurangi.',
   },
   tantangan: {
     title: 'Mode Tantangan',
-    emoji: '🚀',
+    icon: <Rocket size={34} strokeWidth={2} />,
     accent: 'coral',
     route: '/main/tantangan',
     desc: 'Kamu punya 3 nyawa dan waktu terbatas di setiap soal. Semakin cepat benar, semakin besar poinmu!',
   },
+}
+
+const DIFF_ICON = {
+  mudah: <Sprout size={24} strokeWidth={2} />,
+  sedang: <Star size={24} strokeWidth={2} />,
+  sulit: <Flame size={24} strokeWidth={2} />,
 }
 
 export default function SetupGame() {
@@ -32,15 +40,24 @@ export default function SetupGame() {
   return (
     <div className="anim-pop">
       <div className="topbar">
-        <Link to="/" className="brand">
-          <span className="brand-badge">🔢</span>
-          Petualangan Angka
-        </Link>
+        <Brand />
       </div>
 
       <div className="card" style={{ textAlign: 'center', marginBottom: 18 }}>
-        <div style={{ fontSize: 44 }}>{info.emoji}</div>
-        <h1 style={{ fontSize: 24, margin: '8px 0 6px' }}>{info.title}</h1>
+        <div
+          className="icon-circle"
+          style={{
+            width: 64,
+            height: 64,
+            margin: '0 auto',
+            color: '#fff',
+            background: `var(--${info.accent})`,
+            boxShadow: `0 5px 0 var(--${info.accent}-dark)`,
+          }}
+        >
+          {info.icon}
+        </div>
+        <h1 style={{ fontSize: 24, margin: '12px 0 6px' }}>{info.title}</h1>
         <p style={{ color: 'var(--ink-soft)', fontSize: 14 }}>{info.desc}</p>
       </div>
 
@@ -60,7 +77,12 @@ export default function SetupGame() {
               background: difficulty === d.key ? '#f4efff' : '#fff',
             }}
           >
-            <span style={{ fontSize: 28 }}>{d.emoji}</span>
+            <div
+              className="icon-circle"
+              style={{ width: 42, height: 42, background: '#ece1ff', color: 'var(--grape-dark)' }}
+            >
+              {DIFF_ICON[d.key]}
+            </div>
             <span style={{ flex: 1 }}>
               <strong style={{ fontFamily: 'var(--font-display)', fontSize: 16 }}>{d.label}</strong>
               <br />
@@ -68,13 +90,18 @@ export default function SetupGame() {
                 {d.operations.map((o) => opLabel(o)).join(', ')}
               </span>
             </span>
-            {difficulty === d.key && <span style={{ fontSize: 20 }}>✅</span>}
+            {difficulty === d.key && <CheckCircle2 size={22} color="var(--grape)" strokeWidth={2.2} />}
           </button>
         ))}
       </div>
 
-      <button className={`btn btn-block btn-${info.accent === 'grass' ? 'grass' : 'coral'}`} onClick={startGame}>
-        Mulai Bermain 🎮
+      <button
+        className={`btn btn-block btn-${info.accent === 'grass' ? 'grass' : 'coral'}`}
+        onClick={startGame}
+        style={{ gap: 10 }}
+      >
+        <Play size={19} strokeWidth={2.4} fill="currentColor" />
+        Mulai Bermain
       </button>
     </div>
   )

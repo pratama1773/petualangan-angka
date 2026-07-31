@@ -1,20 +1,20 @@
 import { Link } from 'react-router-dom'
+import { Turtle, Rocket, Lightbulb, History as HistoryIcon, ChevronRight } from 'lucide-react'
+import Brand from './Brand.jsx'
 
 export default function Home() {
   return (
     <div className="anim-pop">
       <div className="topbar">
-        <Link to="/" className="brand">
-          <span className="brand-badge">🔢</span>
-          Petualangan Angka
-        </Link>
-        <Link to="/riwayat" className="btn btn-ghost" style={{ padding: '10px 16px', fontSize: 15 }}>
-          📖 Riwayat
+        <Brand />
+        <Link to="/riwayat" className="btn btn-ghost" style={{ padding: '10px 16px', fontSize: 15, gap: 8 }}>
+          <HistoryIcon size={17} strokeWidth={2.4} />
+          Riwayat
         </Link>
       </div>
 
       <div style={{ textAlign: 'center', margin: '10px 0 26px' }}>
-        <h1 style={{ fontSize: 28, marginBottom: 8 }}>Ayo Berhitung! 🎉</h1>
+        <h1 style={{ fontSize: 28, marginBottom: 8 }}>Ayo Berhitung!</h1>
         <p style={{ color: 'var(--ink-soft)', fontSize: 16 }}>
           Pilih cara bermain yang kamu suka
         </p>
@@ -23,7 +23,7 @@ export default function Home() {
       <div style={{ display: 'grid', gap: 18 }}>
         <ModeCard
           to="/mulai/santai"
-          emoji="🐢"
+          icon={<Turtle size={30} strokeWidth={2} />}
           title="Mode Santai"
           desc="Kerjakan soal sebanyak-banyaknya tanpa buru-buru. Cocok untuk berlatih pelan-pelan."
           accent="grass"
@@ -31,7 +31,7 @@ export default function Home() {
         />
         <ModeCard
           to="/mulai/tantangan"
-          emoji="🚀"
+          icon={<Rocket size={30} strokeWidth={2} />}
           title="Mode Tantangan"
           desc="Balapan dengan waktu dan jaga 3 nyawamu! Soal disusun ke bawah seperti di buku tulis."
           accent="coral"
@@ -40,7 +40,12 @@ export default function Home() {
       </div>
 
       <div className="card anim-float" style={{ marginTop: 22, display: 'flex', gap: 14, alignItems: 'center' }}>
-        <div style={{ fontSize: 34 }}>💡</div>
+        <div
+          className="icon-circle"
+          style={{ width: 44, height: 44, background: '#fff3d0', color: 'var(--sun-dark)' }}
+        >
+          <Lightbulb size={22} strokeWidth={2} />
+        </div>
         <p style={{ fontSize: 14, color: 'var(--ink-soft)' }}>
           Kamu bisa memilih tingkat kesulitan <strong>Mudah</strong>, <strong>Sedang</strong>, atau{' '}
           <strong>Sulit</strong> sebelum mulai bermain, di kedua mode.
@@ -50,7 +55,7 @@ export default function Home() {
   )
 }
 
-function ModeCard({ to, emoji, title, desc, accent, tags }) {
+function ModeCard({ to, icon, title, desc, accent, tags }) {
   return (
     <Link
       to={to}
@@ -68,20 +73,16 @@ function ModeCard({ to, emoji, title, desc, accent, tags }) {
       onMouseLeave={(e) => (e.currentTarget.style.transform = 'none')}
     >
       <div
+        className="icon-circle"
         style={{
-          fontSize: 40,
           width: 68,
           height: 68,
-          flexShrink: 0,
-          borderRadius: 18,
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          background: `var(--${accent === 'grass' ? 'grass' : 'coral'})`,
+          color: '#fff',
+          background: `var(--${accent})`,
           boxShadow: `0 5px 0 var(--${accent}-dark)`,
         }}
       >
-        {emoji}
+        {icon}
       </div>
       <div style={{ flex: 1 }}>
         <h2 style={{ fontSize: 20, marginBottom: 4 }}>{title}</h2>
@@ -94,7 +95,7 @@ function ModeCard({ to, emoji, title, desc, accent, tags }) {
           ))}
         </div>
       </div>
-      <div style={{ fontSize: 22, color: 'var(--ink-soft)' }}>›</div>
+      <ChevronRight size={22} color="var(--ink-soft)" style={{ flexShrink: 0 }} />
     </Link>
   )
 }

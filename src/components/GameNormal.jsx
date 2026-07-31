@@ -1,7 +1,18 @@
 import { useState, useCallback, useMemo } from 'react'
 import { useLocation, useNavigate, Link } from 'react-router-dom'
+import {
+  Turtle,
+  CheckCircle2,
+  XCircle,
+  Trophy,
+  RotateCcw,
+  History as HistoryIcon,
+  Home as HomeIcon,
+  Flag,
+} from 'lucide-react'
 import { generateQuestion, DIFFICULTY } from '../utils/questionGenerator.js'
 import { addHistoryEntry } from '../utils/storage.js'
+import Brand from './Brand.jsx'
 
 export default function GameNormal() {
   const location = useLocation()
@@ -60,8 +71,13 @@ export default function GameNormal() {
     return (
       <div className="anim-pop" style={{ textAlign: 'center' }}>
         <div className="card">
-          <div style={{ fontSize: 54 }}>🎉</div>
-          <h1 style={{ fontSize: 24, margin: '10px 0' }}>Kerja Bagus!</h1>
+          <div
+            className="icon-circle"
+            style={{ width: 64, height: 64, margin: '0 auto', background: '#fff3d0', color: 'var(--sun-dark)' }}
+          >
+            <Trophy size={32} strokeWidth={2} />
+          </div>
+          <h1 style={{ fontSize: 24, margin: '12px 0 6px' }}>Kerja Bagus!</h1>
           <p style={{ color: 'var(--ink-soft)', marginBottom: 18 }}>Ini hasil latihanmu di Mode Santai</p>
           <div style={{ display: 'flex', gap: 10, justifyContent: 'center', marginBottom: 6, flexWrap: 'wrap' }}>
             <StatPill label="Skor" value={score} accent="sun" />
@@ -71,11 +87,18 @@ export default function GameNormal() {
           </div>
         </div>
         <div style={{ display: 'grid', gap: 10, marginTop: 18 }}>
-          <button className="btn btn-grass" onClick={() => navigate('/mulai/santai')}>
-            Main Lagi 🔁
+          <button className="btn btn-grass" style={{ gap: 8 }} onClick={() => navigate('/mulai/santai')}>
+            <RotateCcw size={18} strokeWidth={2.4} />
+            Main Lagi
           </button>
-          <Link to="/riwayat" className="btn btn-ghost">Lihat Riwayat 📖</Link>
-          <Link to="/" className="btn btn-ghost">Kembali ke Beranda 🏠</Link>
+          <Link to="/riwayat" className="btn btn-ghost" style={{ gap: 8 }}>
+            <HistoryIcon size={18} strokeWidth={2.4} />
+            Lihat Riwayat
+          </Link>
+          <Link to="/" className="btn btn-ghost" style={{ gap: 8 }}>
+            <HomeIcon size={18} strokeWidth={2.4} />
+            Kembali ke Beranda
+          </Link>
         </div>
       </div>
     )
@@ -84,11 +107,11 @@ export default function GameNormal() {
   return (
     <div className="anim-pop">
       <div className="topbar">
-        <Link to="/" className="brand">
-          <span className="brand-badge">🔢</span>
-          Petualangan Angka
-        </Link>
-        <span className="pill pill-grass">🐢 {diffInfo.label}</span>
+        <Brand />
+        <span className="pill pill-grass" style={{ gap: 6 }}>
+          <Turtle size={15} strokeWidth={2.4} />
+          {diffInfo.label}
+        </span>
       </div>
 
       <div style={{ display: 'flex', gap: 10, marginBottom: 18, flexWrap: 'wrap' }}>
@@ -103,15 +126,12 @@ export default function GameNormal() {
         style={{ textAlign: 'center', marginBottom: 18, position: 'relative' }}
       >
         {feedback && (
-          <div
-            style={{
-              position: 'absolute',
-              top: 14,
-              right: 18,
-              fontSize: 26,
-            }}
-          >
-            {feedback === 'benar' ? '✅' : '❌'}
+          <div style={{ position: 'absolute', top: 14, right: 18 }}>
+            {feedback === 'benar' ? (
+              <CheckCircle2 size={26} color="var(--grass-dark)" strokeWidth={2.4} />
+            ) : (
+              <XCircle size={26} color="var(--coral-dark)" strokeWidth={2.4} />
+            )}
           </div>
         )}
         <p style={{ color: 'var(--ink-soft)', fontSize: 14, marginBottom: 10 }}>Berapakah hasilnya?</p>
@@ -134,8 +154,9 @@ export default function GameNormal() {
         ))}
       </div>
 
-      <button className="btn btn-ghost btn-block" style={{ marginTop: 22 }} onClick={endSession}>
-        Selesai & Simpan Skor 🏁
+      <button className="btn btn-ghost btn-block" style={{ marginTop: 22, gap: 8 }} onClick={endSession}>
+        <Flag size={18} strokeWidth={2.4} />
+        Selesai & Simpan Skor
       </button>
     </div>
   )

@@ -1,7 +1,20 @@
 import { useState, useEffect, useCallback, useRef } from 'react'
 import { useLocation, useNavigate, Link } from 'react-router-dom'
+import {
+  Rocket,
+  Heart,
+  CheckCircle2,
+  XCircle,
+  TimerOff,
+  HeartCrack,
+  RotateCcw,
+  History as HistoryIcon,
+  Home as HomeIcon,
+  Check,
+} from 'lucide-react'
 import { generateQuestion, DIFFICULTY } from '../utils/questionGenerator.js'
 import { addHistoryEntry } from '../utils/storage.js'
+import Brand from './Brand.jsx'
 
 const MAX_LIVES = 3
 const BASE_POINTS = 10
@@ -33,18 +46,12 @@ export default function GameChallenge() {
     requestAnimationFrame(() => inputRef.current?.focus())
   }, [difficulty, diffInfo.timeLimit])
 
-  const handleWrong = useCallback(
-    (isTimeout) => {
-      setLocked(true)
-      setFeedback(isTimeout ? 'waktu' : 'salah')
-      setAnswered((n) => n + 1)
-      setLives((l) => {
-        const nl = l - 1
-        return nl
-      })
-    },
-    []
-  )
+  const handleWrong = useCallback((isTimeout) => {
+    setLocked(true)
+    setFeedback(isTimeout ? 'waktu' : 'salah')
+    setAnswered((n) => n + 1)
+    setLives((l) => l - 1)
+  }, [])
 
   function handleSubmit(e) {
     e?.preventDefault()
@@ -110,8 +117,13 @@ export default function GameChallenge() {
     return (
       <div className="anim-pop" style={{ textAlign: 'center' }}>
         <div className="card">
-          <div style={{ fontSize: 54 }}>💥</div>
-          <h1 style={{ fontSize: 24, margin: '10px 0' }}>Game Over!</h1>
+          <div
+            className="icon-circle"
+            style={{ width: 64, height: 64, margin: '0 auto', background: '#ffe1e1', color: 'var(--coral-dark)' }}
+          >
+            <HeartCrack size={32} strokeWidth={2} />
+          </div>
+          <h1 style={{ fontSize: 24, margin: '12px 0 6px' }}>Permainan Berakhir</h1>
           <p style={{ color: 'var(--ink-soft)', marginBottom: 18 }}>Nyawamu habis. Ini hasil tantanganmu:</p>
           <div style={{ display: 'flex', gap: 10, justifyContent: 'center', marginBottom: 6, flexWrap: 'wrap' }}>
             <StatPill label="Skor" value={score} accent="sun" />
@@ -121,11 +133,18 @@ export default function GameChallenge() {
           </div>
         </div>
         <div style={{ display: 'grid', gap: 10, marginTop: 18 }}>
-          <button className="btn btn-coral" onClick={() => navigate('/mulai/tantangan')}>
-            Coba Lagi 🔁
+          <button className="btn btn-coral" style={{ gap: 8 }} onClick={() => navigate('/mulai/tantangan')}>
+            <RotateCcw size={18} strokeWidth={2.4} />
+            Coba Lagi
           </button>
-          <Link to="/riwayat" className="btn btn-ghost">Lihat Riwayat 📖</Link>
-          <Link to="/" className="btn btn-ghost">Kembali ke Beranda 🏠</Link>
+          <Link to="/riwayat" className="btn btn-ghost" style={{ gap: 8 }}>
+            <HistoryIcon size={18} strokeWidth={2.4} />
+            Lihat Riwayat
+          </Link>
+          <Link to="/" className="btn btn-ghost" style={{ gap: 8 }}>
+            <HomeIcon size={18} strokeWidth={2.4} />
+            Kembali ke Beranda
+          </Link>
         </div>
       </div>
     )
@@ -137,19 +156,24 @@ export default function GameChallenge() {
   return (
     <div className="anim-pop">
       <div className="topbar">
-        <Link to="/" className="brand">
-          <span className="brand-badge">🔢</span>
-          Petualangan Angka
-        </Link>
-        <span className="pill pill-coral">🚀 {diffInfo.label}</span>
+        <Brand />
+        <span className="pill pill-coral" style={{ gap: 6 }}>
+          <Rocket size={15} strokeWidth={2.4} />
+          {diffInfo.label}
+        </span>
       </div>
 
       <div style={{ display: 'flex', gap: 10, marginBottom: 14, alignItems: 'center' }}>
         <div style={{ display: 'flex', gap: 4 }}>
           {Array.from({ length: MAX_LIVES }).map((_, i) => (
-            <span key={i} style={{ fontSize: 22, opacity: i < lives ? 1 : 0.25 }}>
-              ❤️
-            </span>
+            <Heart
+              key={i}
+              size={22}
+              strokeWidth={2}
+              color="var(--coral)"
+              fill={i < lives ? 'var(--coral)' : 'none'}
+              opacity={i < lives ? 1 : 0.35}
+            />
           ))}
         </div>
         <div style={{ flex: 1 }} />
@@ -183,8 +207,14 @@ export default function GameChallenge() {
         style={{ marginBottom: 18, position: 'relative' }}
       >
         {feedback && (
-          <div style={{ position: 'absolute', top: 14, right: 18, fontSize: 26 }}>
-            {feedback === 'benar' ? '✅' : feedback === 'waktu' ? '⏰' : '❌'}
+          <div style={{ position: 'absolute', top: 14, right: 18 }}>
+            {feedback === 'benar' ? (
+              <CheckCircle2 size={26} color="var(--grass-dark)" strokeWidth={2.4} />
+            ) : feedback === 'waktu' ? (
+              <TimerOff size={26} color="var(--coral-dark)" strokeWidth={2.4} />
+            ) : (
+              <XCircle size={26} color="var(--coral-dark)" strokeWidth={2.4} />
+            )}
           </div>
         )}
         <p style={{ color: 'var(--ink-soft)', fontSize: 13, textAlign: 'center', marginBottom: 12 }}>
@@ -213,8 +243,14 @@ export default function GameChallenge() {
             />
           </div>
 
-          <button type="submit" className="btn btn-coral btn-block" style={{ marginTop: 20 }} disabled={locked || input === ''}>
-            Jawab ✔️
+          <button
+            type="submit"
+            className="btn btn-coral btn-block"
+            style={{ marginTop: 20, gap: 8 }}
+            disabled={locked || input === ''}
+          >
+            <Check size={18} strokeWidth={2.6} />
+            Jawab
           </button>
         </form>
 

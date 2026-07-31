@@ -18,7 +18,7 @@ export default function App() {
           <Route path="/main/tantangan" element={<GameChallenge />} />
           <Route path="/riwayat" element={<History />} />
         </Routes>
-        <p className="footer-note">Dibuat untuk teman-teman kecil yang suka berhitung ✨</p>
+        <p className="footer-note">Dibuat untuk teman-teman kecil yang suka berhitung</p>
       </div>
     </>
   )
