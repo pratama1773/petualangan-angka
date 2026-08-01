@@ -17,7 +17,7 @@ Aplikasi permainan edukatif matematika interaktif yang ditujukan untuk siswa Sek
   * Pemain akan kehilangan 1 (satu) nyawa apabila durasi waktu habis atau memberikan jawaban yang salah.
   * Sesi permainan akan berakhir secara otomatis ketika seluruh nyawa telah habis.
   * Kalkulasi skor akhir merupakan akumulasi dari poin dasar, bonus kecepatan dalam menjawab, serta total soal yang berhasil diselesaikan.
-  * Format soal disusun secara vertikal, di mana input jawaban dilakukan melalui pengetikan angka secara langsung.
+  * Soal disajikan dalam format pilihan ganda dengan 4 (empat) opsi jawaban, dengan indikator tambahan berupa progress bar waktu dan jumlah nyawa yang tersisa.
 
 ### 2. Sistem Generator Soal
 
@@ -41,7 +41,10 @@ Logika pembuatan soal yang terdapat pada direktori `src/utils/questionGenerator.
 * Sistem memanfaatkan `sessionStorage`, sehingga data riwayat akan terhapus secara otomatis saat *tab* browser atau aplikasi ditutup.
 * Tersedia juga fitur untuk melakukan penghapusan data riwayat secara manual oleh pengguna.
 
----
+### 5. Efek Suara
+
+* Setiap jawaban benar, jawaban salah, waktu habis, dan akhir sesi permainan disertai efek suara yang dihasilkan secara langsung melalui Web Audio API (`src/utils/sound.js`), tanpa menggunakan berkas audio eksternal.
+* Tersedia tombol pengatur suara (aktif/nonaktif) yang dapat diakses di seluruh halaman, dengan status preferensi disimpan pada `sessionStorage`.
 
 ## Panduan Instalasi dan Penggunaan
 
@@ -61,8 +64,6 @@ npm run build
 npm run preview
 ```
 
----
-
 ## Struktur Direktori Proyek
 
 ```text
@@ -71,6 +72,8 @@ npm run preview
 ├── src/
 │   ├── components/
 │   │   ├── BackgroundClouds.jsx
+│   │   ├── Brand.jsx
+│   │   ├── SoundToggle.jsx
 │   │   ├── Home.jsx
 │   │   ├── SetupGame.jsx
 │   │   ├── GameNormal.jsx
@@ -78,7 +81,8 @@ npm run preview
 │   │   └── History.jsx
 │   ├── utils/
 │   │   ├── questionGenerator.js
-│   │   └── storage.js
+│   │   ├── storage.js
+│   │   └── sound.js
 │   ├── App.jsx
 │   ├── main.jsx
 │   └── index.css
@@ -88,12 +92,11 @@ npm run preview
 └── package.json
 ```
 
----
-
 ## Catatan Teknis
 
 * Aplikasi mengimplementasikan `HashRouter` dari pustaka `react-router-dom` guna memastikan kelancaran navigasi pada berbagai layanan *hosting* statis tanpa memerlukan konfigurasi server tambahan.
-* Berkas produksi (*production bundle*) dirancang dalam ukuran yang sangat efisien (berkas JS ter-gzip ± 59 KB) untuk memastikan performa pemuatan yang ringan dan cepat, termasuk pada kondisi jaringan yang lambat.
+* Elemen ikon pada antarmuka menggunakan pustaka `lucide-react`, satu set ikon garis yang konsisten dan diimpor sesuai kebutuhan (*tree-shaken*).
+* Berkas produksi (*production bundle*) dirancang dalam ukuran yang sangat efisien (berkas JS ter-gzip di kisaran 60 KB) untuk memastikan performa pemuatan yang ringan dan cepat, termasuk pada kondisi jaringan yang lambat.
 * Antarmuka pengguna (UI) dirancang sepenuhnya responsif, memberikan kenyamanan penggunaan baik pada perangkat ponsel maupun tablet.
 * Aplikasi menghormati preferensi aksesibilitas `prefers-reduced-motion` dari pengguna dengan cara meminimalisasi animasi jika fitur tersebut diaktifkan.
-* Mengedepankan privasi pengguna; tidak ada data pribadi yang dikumpulkan maupun dikirimkan ke server eksternal mana pun. Seluruh proses permainan dieksekusi secara lokal di sisi klien (*browser*).
+* Mengedepankan privasi pengguna; tidak ada data pribadi yang dikumpulkan maupun dikirimkan ke server eksternal mana pun. Seluruh proses permainan, termasuk riwayat sesi dan efek suara, dieksekusi secara lokal di sisi klien (*browser*).

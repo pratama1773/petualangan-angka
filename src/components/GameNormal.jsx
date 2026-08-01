@@ -13,6 +13,7 @@ import {
 import { generateQuestion, DIFFICULTY } from '../utils/questionGenerator.js'
 import { addHistoryEntry } from '../utils/storage.js'
 import Brand from './Brand.jsx'
+import { playCorrect, playWrong, playFinish } from '../utils/sound.js'
 
 export default function GameNormal() {
   const location = useLocation()
@@ -48,13 +49,16 @@ export default function GameNormal() {
       setScore((s) => s + 1)
       setCorrect((c) => c + 1)
       setFeedback('benar')
+      playCorrect()
     } else {
       setFeedback('salah')
+      playWrong()
     }
     setTimeout(() => nextQuestion(), 700)
   }
 
   function endSession() {
+    playFinish()
     addHistoryEntry({
       mode: 'Mode Santai',
       difficulty: diffInfo.label,

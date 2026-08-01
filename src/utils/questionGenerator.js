@@ -75,7 +75,7 @@ export function generateQuestion(difficultyKey, opsOverride) {
       break
     }
     case 'kurang': {
-      // Pastikan a >= b agar hasil tidak negatif
+      // a selalu lebih besar atau sama dengan b, sehingga hasil tidak pernah negatif
       const x = randInt(diff.subRange[0], diff.subRange[1])
       const y = randInt(diff.subRange[0], diff.subRange[1])
       a = Math.max(x, y)
@@ -90,7 +90,7 @@ export function generateQuestion(difficultyKey, opsOverride) {
       break
     }
     case 'bagi': {
-      // Bentuk dari perkalian agar hasil selalu bilangan bulat
+      // a dibentuk dari divisor × quotient, sehingga hasil bagi selalu bilangan bulat
       const divisor = randInt(diff.divDivisorRange[0], diff.divDivisorRange[1])
       const quotient = randInt(diff.divQuotientRange[0], diff.divQuotientRange[1])
       a = divisor * quotient
@@ -105,7 +105,7 @@ export function generateQuestion(difficultyKey, opsOverride) {
     }
   }
 
-  // Buat 3 opsi jawaban pengecoh yang masuk akal (tidak negatif, tidak terlalu jauh)
+  // Tiga opsi pengecoh dihasilkan di sekitar jawaban benar, tetap tidak negatif dan tidak terlalu jauh
   const options = buildOptions(answer, op)
 
   return {

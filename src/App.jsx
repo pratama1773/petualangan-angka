@@ -5,11 +5,13 @@ import GameNormal from './components/GameNormal.jsx'
 import GameChallenge from './components/GameChallenge.jsx'
 import History from './components/History.jsx'
 import BackgroundClouds from './components/BackgroundClouds.jsx'
+import SoundToggle from './components/SoundToggle.jsx'
 
 export default function App() {
   return (
     <>
       <BackgroundClouds />
+      <SoundToggle />
       <div className="app-shell">
         <Routes>
           <Route path="/" element={<Home />} />

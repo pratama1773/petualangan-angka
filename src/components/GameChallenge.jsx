@@ -10,11 +10,11 @@ import {
   RotateCcw,
   History as HistoryIcon,
   Home as HomeIcon,
-  Check,
 } from 'lucide-react'
 import { generateQuestion, DIFFICULTY } from '../utils/questionGenerator.js'
 import { addHistoryEntry } from '../utils/storage.js'
 import Brand from './Brand.jsx'
+import { playCorrect, playWrong, playTimeout, playGameOver } from '../utils/sound.js'
 
 const MAX_LIVES = 3
 const BASE_POINTS = 10
@@ -31,57 +31,58 @@ export default function GameChallenge() {
   const [score, setScore] = useState(0)
   const [correct, setCorrect] = useState(0)
   const [answered, setAnswered] = useState(0)
-  const [input, setInput] = useState('')
+  const [selected, setSelected] = useState(null)
   const [feedback, setFeedback] = useState(null)
   const [locked, setLocked] = useState(false)
   const [gameOver, setGameOver] = useState(false)
-  const inputRef = useRef(null)
+  const timeLeftRef = useRef(timeLeft)
+  timeLeftRef.current = timeLeft
 
   const nextQuestion = useCallback(() => {
     setQuestion(generateQuestion(difficulty))
-    setInput('')
+    setSelected(null)
     setFeedback(null)
     setLocked(false)
     setTimeLeft(diffInfo.timeLimit)
-    requestAnimationFrame(() => inputRef.current?.focus())
   }, [difficulty, diffInfo.timeLimit])
 
-  const handleWrong = useCallback((isTimeout) => {
+  const handleTimeout = useCallback(() => {
     setLocked(true)
-    setFeedback(isTimeout ? 'waktu' : 'salah')
+    setFeedback('waktu')
     setAnswered((n) => n + 1)
     setLives((l) => l - 1)
+    playTimeout()
   }, [])
 
-  function handleSubmit(e) {
-    e?.preventDefault()
-    if (locked || input === '') return
-    const val = Number(input)
+  function handleAnswer(opt) {
+    if (locked) return
     setLocked(true)
+    setSelected(opt)
     setAnswered((n) => n + 1)
-    if (val === question.answer) {
-      const bonus = Math.round(timeLeft * (2 + (Object.keys(DIFFICULTY).indexOf(difficulty) + 1)))
+    if (opt === question.answer) {
+      const bonus = Math.round(timeLeftRef.current * (2 + (Object.keys(DIFFICULTY).indexOf(difficulty) + 1)))
       setScore((s) => s + BASE_POINTS + bonus)
       setCorrect((c) => c + 1)
       setFeedback('benar')
+      playCorrect()
     } else {
       setFeedback('salah')
       setLives((l) => l - 1)
+      playWrong()
     }
   }
 
-  // Timer countdown
   useEffect(() => {
     if (locked || gameOver) return
+      playGameOver()
     if (timeLeft <= 0) {
-      handleWrong(true)
+      handleTimeout()
       return
     }
     const t = setTimeout(() => setTimeLeft((s) => s - 1), 1000)
     return () => clearTimeout(t)
-  }, [timeLeft, locked, gameOver, handleWrong])
+  }, [timeLeft, locked, gameOver, handleTimeout])
 
-  // Move to next question or end game after feedback shown
   useEffect(() => {
     if (!feedback) return
     if (lives <= 0) {
@@ -93,7 +94,6 @@ export default function GameChallenge() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [feedback])
 
-  // Save history once game over is reached
   useEffect(() => {
     if (!gameOver) return
     addHistoryEntry({
@@ -107,10 +107,6 @@ export default function GameChallenge() {
     })
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [gameOver])
-
-  useEffect(() => {
-    inputRef.current?.focus()
-  }, [])
 
   if (gameOver) {
     const accuracy = answered ? Math.round((correct / answered) * 100) : 0
@@ -181,14 +177,7 @@ export default function GameChallenge() {
       </div>
 
       <div className="card" style={{ padding: '6px 10px', marginBottom: 16 }}>
-        <div
-          style={{
-            height: 10,
-            borderRadius: 999,
-            background: '#eee',
-            overflow: 'hidden',
-          }}
-        >
+        <div style={{ height: 10, borderRadius: 999, background: '#eee', overflow: 'hidden' }}>
           <div
             style={{
               height: '100%',
@@ -202,9 +191,9 @@ export default function GameChallenge() {
       </div>
 
       <div
-        className={`card ${feedback === 'salah' || feedback === 'waktu' ? 'anim-shake' : ''}`}
+        className={`card ${feedback === 'salah' || feedback === 'waktu' ? 'anim-shake' : 'anim-wobble'}`}
         key={question.id}
-        style={{ marginBottom: 18, position: 'relative' }}
+        style={{ textAlign: 'center', marginBottom: 18, position: 'relative' }}
       >
         {feedback && (
           <div style={{ position: 'absolute', top: 14, right: 18 }}>
@@ -217,48 +206,37 @@ export default function GameChallenge() {
             )}
           </div>
         )}
-        <p style={{ color: 'var(--ink-soft)', fontSize: 13, textAlign: 'center', marginBottom: 12 }}>
-          Soal susun — isi hasilnya ya!
-        </p>
-
-        <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-          <div className="susun">
-            <div className="susun-row">{question.a}</div>
-            <div className="susun-row">
-              <span className="susun-op">{question.symbol}</span>
-              {question.b}
-            </div>
-            <div className="susun-line" />
-            <input
-              ref={inputRef}
-              className="susun-input"
-              type="tel"
-              inputMode="numeric"
-              pattern="[0-9]*"
-              autoComplete="off"
-              value={input}
-              disabled={locked}
-              placeholder="?"
-              onChange={(e) => setInput(e.target.value.replace(/[^0-9]/g, ''))}
-            />
-          </div>
-
-          <button
-            type="submit"
-            className="btn btn-coral btn-block"
-            style={{ marginTop: 20, gap: 8 }}
-            disabled={locked || input === ''}
-          >
-            <Check size={18} strokeWidth={2.6} />
-            Jawab
-          </button>
-        </form>
-
-        {feedback === 'waktu' || feedback === 'salah' ? (
-          <p style={{ textAlign: 'center', marginTop: 10, fontSize: 14, color: 'var(--ink-soft)' }}>
+        <p style={{ color: 'var(--ink-soft)', fontSize: 14, marginBottom: 10 }}>Berapakah hasilnya?</p>
+        <h1 style={{ fontSize: 42, letterSpacing: 1 }}>
+          {question.a} {question.symbol} {question.b}
+        </h1>
+        {feedback === 'waktu' && (
+          <p style={{ marginTop: 10, fontSize: 14, color: 'var(--ink-soft)' }}>
             Jawaban yang benar: <strong>{question.answer}</strong>
           </p>
-        ) : null}
+        )}
+      </div>
+
+      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12 }}>
+        {question.options.map((opt) => {
+          const isSelected = selected === opt
+          const isAnswerOpt = opt === question.answer
+          let variant = 'btn-sky'
+          if (locked && isSelected && feedback === 'benar') variant = 'btn-grass'
+          if (locked && isSelected && feedback === 'salah') variant = 'btn-coral'
+          if (locked && !isSelected && feedback === 'salah' && isAnswerOpt) variant = 'btn-grass'
+          return (
+            <button
+              key={opt}
+              className={`btn ${variant}`}
+              disabled={locked}
+              onClick={() => handleAnswer(opt)}
+              style={{ fontSize: 22, padding: '18px 10px' }}
+            >
+              {opt}
+            </button>
+          )
+        })}
       </div>
     </div>
   )
