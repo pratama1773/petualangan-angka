@@ -125,15 +125,32 @@ function buildOptions(answer, op) {
   const set = new Set([answer])
   const spread = op === 'kali' || op === 'bagi' ? Math.max(2, Math.round(answer * 0.2)) : Math.max(2, Math.round(answer * 0.15) || 2)
 
-  while (set.size < 4) {
+  // Percobaan acak dibatasi maksimal 30 kali — pada rentang angka kecil
+  // (misalnya jawaban bernilai 0), kombinasi acak yang tersedia bisa sangat
+  // terbatas, sehingga loop tanpa batas atas berpotensi tidak pernah selesai.
+  let attempts = 0
+  while (set.size < 4 && attempts < 30) {
+    attempts++
     const delta = randInt(-spread, spread) || randInt(1, spread)
     let candidate = answer + delta
     if (candidate < 0) candidate = answer + Math.abs(delta)
-    if (candidate === answer) candidate = answer + spread + set.size
+    if (candidate < 0 || candidate === answer) continue
     set.add(candidate)
   }
 
-  return shuffle(Array.from(set))
+  // Jaring pengaman: jika hasil acak di atas belum cukup mengisi 4 opsi
+  // (kasus jawaban kecil seperti 0 atau 1), sisanya dilengkapi secara
+  // berurutan dari angka terdekat, sehingga fungsi ini dijamin selalu berhenti.
+  let offset = 1
+  while (set.size < 4) {
+    const up = answer + offset
+    const down = answer - offset
+    if (!set.has(up)) set.add(up)
+    if (set.size < 4 && down >= 0 && !set.has(down)) set.add(down)
+    offset++
+  }
+
+  return shuffle(Array.from(set)).slice(0, 4)
 }
 
 function shuffle(arr) {
