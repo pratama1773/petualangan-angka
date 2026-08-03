@@ -32,19 +32,11 @@ export function setMuted(value) {
   } catch {
     // abaikan jika storage tidak tersedia
   }
-  notifyListeners()
 }
 
 export function toggleMuted() {
   setMuted(!muted)
   return muted
-}
-
-// Komponen lain (misalnya musik latar) memakai ini untuk ikut bereaksi
-// setiap kali tombol mute ditekan, tanpa perlu tahu detail internal modul ini.
-export function subscribeMuted(callback) {
-  listeners.add(callback)
-  return () => listeners.delete(callback)
 }
 
 function tone(freq, start, duration, { type = 'sine', peak = 0.18 } = {}) {

@@ -6,13 +6,12 @@ import GameChallenge from './components/GameChallenge.jsx'
 import History from './components/History.jsx'
 import BackgroundClouds from './components/BackgroundClouds.jsx'
 import SoundToggle from './components/SoundToggle.jsx'
-import BackgroundMusic from './components/BackgroundMusic.jsx'
+
 
 export default function App() {
   return (
     <>
       <BackgroundClouds />
-      <BackgroundMusic />
       <SoundToggle />
       <div className="app-shell">
         <Routes>
