@@ -24,16 +24,16 @@ Aplikasi permainan edukatif matematika interaktif yang ditujukan untuk siswa Sek
 Logika pembuatan soal yang terdapat pada direktori `src/utils/questionGenerator.js` diatur berdasarkan ketentuan berikut:
 * **Pengurangan**: Angka pertama dipastikan selalu lebih besar atau sama dengan angka kedua guna menghindari hasil bernilai negatif.
 * **Pembagian**: Disusun berdasarkan operasi perkalian terlebih dahulu untuk memastikan hasil akhir selalu berupa bilangan bulat.
-* **Perkalian**: Batasan angka disesuaikan secara proporsional dengan tingkat kesulitan yang dipilih.
-* Rentang nilai angka akan bertambah secara dinamis menyesuaikan dengan tingkat kesulitan permainan.
+* **Perkalian**: Faktor pengali diambil dari rentang tersendiri yang lebih kecil dan terpisah dari rentang penjumlahan/pengurangan, agar hasil kali tetap masuk akal untuk anak SD sekalipun rentang angka penjumlahan/pengurangan pada tingkat tersebut sudah besar.
+* Seluruh operasi (penjumlahan, pengurangan, perkalian, pembagian) tersedia di setiap tingkat kesulitan; yang membedakan antar tingkat adalah rentang nilai angka yang digunakan.
 
 ### 3. Tingkat Kesulitan
 
-| Tingkat Kesulitan | Jenis Operasi | Rentang Angka | Alokasi Waktu per Soal (Mode Tantangan) |
-| :--- | :--- | :--- | :--- |
-| **Mudah** | Penjumlahan, Pengurangan | 1–10 | 20 detik |
-| **Sedang** | Penjumlahan, Pengurangan, Perkalian | 5–50 (Perkalian: 2–10) | 15 detik |
-| **Sulit** | Penjumlahan, Pengurangan, Perkalian, Pembagian | 10–100 (Perkalian/Pembagian: 2–12) | 12 detik |
+| Tingkat Kesulitan | Jenis Operasi | Rentang Angka (Penjumlahan/Pengurangan) | Rentang Angka (Perkalian/Pembagian) | Alokasi Waktu per Soal (Mode Tantangan) |
+| :--- | :--- | :--- | :--- | :--- |
+| **Mudah** | Penjumlahan, Pengurangan, Perkalian, Pembagian | 1–50 | 1–5 | 20 detik |
+| **Sedang** | Penjumlahan, Pengurangan, Perkalian, Pembagian | 60–150 | 2–10 | 15 detik |
+| **Sulit** | Penjumlahan, Pengurangan, Perkalian, Pembagian | 500–1000 | 2–12 | 12 detik |
 
 ### 4. Riwayat Sesi
 
